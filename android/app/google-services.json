@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "611141342189",
+    "project_id": "velvethue-19ef1",
+    "storage_bucket": "velvethue-19ef1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611141342189:android:aebb38602fac2df2d94de4",
+        "android_client_info": {
+          "package_name": "com.example.velvethue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611141342189-0a0uehn3pkpsqse5ujop2tges9jh651c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.velvethue",
+            "certificate_hash": "431a28a4a8ae6e047519f3dbebc5b67a9bb44880"
+          }
+        },
+        {
+          "client_id": "611141342189-r2pvmk1cud43koabk05lv3jb7gcj38at.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA78l1OF_w1ymlE2CyubP0m8jw0FlhscmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611141342189-r2pvmk1cud43koabk05lv3jb7gcj38at.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
