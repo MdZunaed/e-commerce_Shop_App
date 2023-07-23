@@ -5,7 +5,6 @@ import 'package:velvethue/controller/auth.dart';
 import 'package:velvethue/screen/auth/signup.dart';
 import 'package:velvethue/constant/others.dart';
 import 'package:velvethue/constant/text_style.dart';
-import 'package:velvethue/screen/home_page.dart';
 import 'package:velvethue/widgets/button.dart';
 import 'package:velvethue/widgets/text_field.dart';
 
@@ -15,8 +14,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passController = TextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -31,10 +28,11 @@ class LoginPage extends StatelessWidget {
                 Text("Login To Your Account",
                     style: kTitle.copyWith(fontSize: 25.sp)),
                 gap,
-                TxtField(controller: emailController, hint: "Email"),
+                TxtField(
+                    controller: controller.loginEmailController, hint: "Email"),
                 gap,
                 TxtField(
-                  controller: passController,
+                  controller: controller.loginPassController,
                   hint: "Password",
                   obscure: true,
                 ),
@@ -47,25 +45,8 @@ class LoginPage extends StatelessWidget {
                     ? processing
                     : CustomButton(
                         text: "Login",
-                        onTap: () async {
-                          controller.isLoading(true);
-                          String email = emailController.text.trim();
-                          String password = passController.text.trim();
-                          if (email == "" || password == "") {
-                            toast("Fill all the info");
-                            controller.isLoading(false);
-                          } else {
-                            await controller
-                                .loginMethod(email: email, password: password)
-                                .then((value) {
-                              if (value != null) {
-                                toast("Logged In");
-                                Get.offAll(() => const HomePage());
-                              } else {
-                                controller.isLoading(false);
-                              }
-                            });
-                          }
+                        onTap: () {
+                          controller.loginMethod();
                         }),
                 gap,
                 InkWell(

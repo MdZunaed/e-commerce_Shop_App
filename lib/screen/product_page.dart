@@ -7,7 +7,7 @@ import 'package:velvethue/constant/text_style.dart';
 import 'package:velvethue/widgets/button.dart';
 import 'package:velvethue/widgets/mini_button.dart';
 
-import 'nav pages/Cart/cart.dart';
+import 'Cart/cart.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});

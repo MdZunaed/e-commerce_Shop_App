@@ -5,12 +5,12 @@ import 'package:velvethue/constant/colors.dart';
 import 'package:velvethue/constant/others.dart';
 import 'package:velvethue/controller/auth.dart';
 import 'package:velvethue/screen/auth/login.dart';
-import 'package:velvethue/screen/nav%20pages/Accont/edit_acc.dart';
 import 'package:velvethue/widgets/acc_item.dart';
 import 'package:velvethue/widgets/count_view.dart';
 import 'package:velvethue/widgets/mini_button.dart';
 
 import '../../../constant/text_style.dart';
+import 'edit_acc.dart';
 
 class Account extends StatelessWidget {
   const Account({super.key});

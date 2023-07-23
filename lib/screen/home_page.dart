@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:velvethue/constant/colors.dart';
 import 'package:velvethue/constant/text_style.dart';
 import 'package:velvethue/controller/nav_bar.dart';
-import 'nav pages/Accont/account.dart';
-import 'nav pages/Cart/cart.dart';
-import 'nav pages/Category/category.dart';
-import 'nav pages/Home/home.dart';
+
+import 'Account/account.dart';
+import 'Cart/cart.dart';
+import 'Category/category.dart';
+import 'Home/home.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

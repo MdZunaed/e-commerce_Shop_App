@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:velvethue/controller/auth.dart';
 import 'package:velvethue/screen/auth/login.dart';
-import 'package:velvethue/screen/home_page.dart';
 import '../../constant/others.dart';
 import '../../constant/text_style.dart';
 import '../../widgets/button.dart';
@@ -15,10 +14,6 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
-    TextEditingController nameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passController = TextEditingController();
-    TextEditingController cpassController = TextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -34,67 +29,37 @@ class SignupPage extends StatelessWidget {
                     style: kTitle.copyWith(fontSize: 25.sp)),
                 gap,
                 TxtField(
-                  controller: nameController,
+                  controller: controller.nameController,
                   hint: "name",
                 ),
                 gap,
                 TxtField(
-                  controller: emailController,
+                  controller: controller.signupEmailController,
                   hint: "Email",
                 ),
                 gap,
                 TxtField(
-                  controller: passController,
+                  controller: controller.signupPassController,
                   hint: "Password",
                   obscure: true,
                 ),
                 gap,
                 TxtField(
-                  controller: cpassController,
+                  controller: controller.cpassController,
                   hint: "Re-type Password",
                   obscure: true,
                 ),
                 gap,
                 gap,
+
+//******************Signup Method******************//
+
                 controller.isLoading.value
                     ? processing
                     : CustomButton(
                         text: "Create Acoount",
-                        onTap: () async {
-                          controller.isLoading(true);
-                          String name = nameController.text.trim();
-                          String email = emailController.text.trim();
-                          String pass = passController.text.trim();
-                          String cpass = cpassController.text.trim();
-                          if (name == "" || email == "" || pass == "") {
-                            toast("Fill all the info");
-                            controller.isLoading(false);
-                          } else if (pass != cpass) {
-                            toast("Password do not match");
-                            controller.isLoading(false);
-                          } else {
-                            await controller.signupMethod(
-                                email: email, password: pass);
-                            await controller.storeData(
-                                name: name, email: email, password: pass);
-                            toast("logged in");
-                            Get.offAll(() => const HomePage());
-                            // try {
-                            //   await controller
-                            //       .signupMethod(email: email, password: pass)
-                            //       .then((value) {
-                            //     return controller.storeData(
-                            //         name: name, email: email, password: pass);
-                            //   }).then((value) {
-                            //     toast("Logged in");
-                            //     Get.offAll(() => const HomePage());
-                            //   });
-                            // } catch (e) {
-                            //   //auth.signOut();
-                            //   toast(e.toString());
-                            //   controller.isLoading(false);
-                            // }
-                          }
+                        onTap: () {
+                          controller.signupMethod();
                         }),
                 gap,
                 gap,

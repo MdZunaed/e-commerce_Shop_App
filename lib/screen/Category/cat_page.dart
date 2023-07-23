@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../constant/others.dart';
 import '../../../constant/text_style.dart';
 import '../../../widgets/item_view.dart';
-import '../../product_page.dart';
+import '../product_page.dart';
 
 class CategoryPage extends StatelessWidget {
   final String title;

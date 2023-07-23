@@ -7,7 +7,6 @@ import 'package:velvethue/constant/others.dart';
 import 'package:velvethue/constant/text_style.dart';
 import 'package:velvethue/controller/account_ctrl.dart';
 import 'package:velvethue/widgets/button.dart';
-import 'package:velvethue/widgets/mini_button.dart';
 import 'package:velvethue/widgets/text_field.dart';
 
 class EditAccount extends StatelessWidget {
