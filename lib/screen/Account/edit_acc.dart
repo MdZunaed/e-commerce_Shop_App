@@ -15,8 +15,7 @@ class EditAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AccController());
-    final nameController = TextEditingController();
-    final passController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -31,20 +30,21 @@ class EditAccount extends StatelessWidget {
                 width: 100.w,
                 decoration: const BoxDecoration(shape: BoxShape.circle),
                 child: controller.imgPath.isEmpty
-                    ? Image.asset("images/logo.png", fit: BoxFit.cover)
+                    ? const Icon(Icons.person, size: 40)
+                    //? Image.asset("images/logo.png", fit: BoxFit.cover)
                     : Image.file(File(controller.imgPath.value),
                         fit: BoxFit.cover),
               ),
               space,
               OutlinedButton(
                   onPressed: () {
-                    controller.changeImage();
+                    controller.changeimage();
                   },
                   child: Text("change image", style: kText)),
               gap,
-              TxtField(controller: nameController, hint: "name"),
+              TxtField(controller: controller.nameController, hint: "name"),
               gap,
-              TxtField(controller: passController, hint: "password"),
+              TxtField(controller: controller.passController, hint: "password"),
               const Spacer(),
               CustomButton(text: "save changes", onTap: () {}),
             ],

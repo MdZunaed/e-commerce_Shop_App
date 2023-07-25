@@ -4,8 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:velvethue/constant/colors.dart';
 import 'package:velvethue/models/user_model.dart';
-import 'package:velvethue/screen/auth/firebase.dart';
+import 'package:velvethue/services/firebase.dart';
 import 'package:velvethue/screen/home_page.dart';
+
+import '../constant/text_style.dart';
+import '../screen/auth/login.dart';
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
@@ -30,7 +33,7 @@ class AuthController extends GetxController {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((value) {
           toast("logged in");
-          Get.offAll(() => const HomePage());
+          return Get.offAll(() => const HomePage());
         });
       } on FirebaseAuthException catch (e) {
         toast(e.toString());
@@ -58,9 +61,20 @@ class AuthController extends GetxController {
       try {
         userCredential = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        await storeData();
-        Get.offAll(() => const HomePage());
         toast("Account created");
+        Get.offAll(() => const HomePage());
+        String uid = currentUser!.uid;
+        UserModel newUser = UserModel(
+            id: uid, name: name, email: email, pass: password, imageUrl: '');
+        await firestore.collection(users).doc(uid).set(newUser.toMap());
+        // userCredential = await auth
+        //     .createUserWithEmailAndPassword(email: email, password: password)
+        //     .then((value) {
+        //   return storeData();
+        // }).then((value) {
+        //   toast("Account created");
+        //   return Get.offAll(() => const HomePage());
+        // });
       } on FirebaseAuthException catch (e) {
         toast(e.toString());
         isLoading.value = false;
@@ -69,27 +83,41 @@ class AuthController extends GetxController {
     return userCredential;
   }
 
-  storeData() async {
-    try {
-      if (currentUser != null) {
-        String uid = currentUser!.uid;
-        UserModel newUser = UserModel(
-            id: uid,
-            name: nameController.text.trim(),
-            email: signupEmailController.text.trim(),
-            pass: signupPassController.text.trim(),
-            imageUrl: '');
-        final store = firestore.collection(users).doc(uid);
-        await store.set(newUser.toMap());
-      }
-    } catch (e) {
-      toast(e.toString());
-    }
-  }
+  // storeData() async {
+  //   try {
+  //     if (currentUser != null) {
+  //       String uid = currentUser!.uid;
+  //       UserModel newUser = UserModel(
+  //           id: uid,
+  //           name: nameController.text.trim(),
+  //           email: signupEmailController.text.trim(),
+  //           pass: signupPassController.text.trim(),
+  //           imageUrl: '');
+  //       DocumentReference store = firestore.collection(users).doc(uid);
+  //       await store.set(newUser.toMap());
+  //     }
+  //   } catch (e) {
+  //     toast(e.toString());
+  //   }
+  // }
 
   signoutMethod() {
     try {
-      auth.signOut();
+      Get.defaultDialog(
+        title: "Alert!",
+        content: Text("Are you sure to logout?", style: kAction),
+        cancel: TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: Text("cancel", style: kTitle)),
+        confirm: TextButton(
+            onPressed: () async {
+              await auth.signOut();
+              Get.offAll(() => const LoginPage());
+            },
+            child: Text("ok", style: kTitle.copyWith(color: Colors.red))),
+      );
     } catch (e) {
       toast(e.toString());
     }

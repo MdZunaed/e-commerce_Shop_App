@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:velvethue/constant/text_style.dart';
-import 'package:velvethue/screen/auth/firebase.dart';
 import 'package:velvethue/screen/home_page.dart';
 import 'package:velvethue/screen/welcome%20page/intro.dart';
+
+import '../../services/firebase.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

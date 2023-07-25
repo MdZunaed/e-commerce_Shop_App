@@ -19,6 +19,9 @@ class UserModel {
       "email": email,
       "pass": pass,
       "imageUrl": imageUrl,
+      "cartCount": "00",
+      "wishCount": "00",
+      "orderCount": "00",
     };
   }
 }
