@@ -18,6 +18,7 @@ class AuthController extends GetxController {
   final signupEmailController = TextEditingController();
   final signupPassController = TextEditingController();
   final cpassController = TextEditingController();
+  UserModel userModel = UserModel();
 
   Future<UserCredential?> loginMethod() async {
     UserCredential? userCredential;
@@ -61,12 +62,15 @@ class AuthController extends GetxController {
       try {
         userCredential = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        toast("Account created");
-        Get.offAll(() => const HomePage());
-        String uid = currentUser!.uid;
+
+        //String uid = currentUser!.uid;
+        String uid = userCredential.user!.uid;
         UserModel newUser = UserModel(
             id: uid, name: name, email: email, pass: password, imageUrl: '');
+        userModel = newUser;
         await firestore.collection(users).doc(uid).set(newUser.toMap());
+        toast("Account created");
+        Get.offAll(() => const HomePage());
         // userCredential = await auth
         //     .createUserWithEmailAndPassword(email: email, password: password)
         //     .then((value) {

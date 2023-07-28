@@ -6,11 +6,14 @@ import 'package:get/get.dart';
 import 'package:velvethue/constant/others.dart';
 import 'package:velvethue/constant/text_style.dart';
 import 'package:velvethue/controller/account_ctrl.dart';
+import 'package:velvethue/controller/auth.dart';
 import 'package:velvethue/widgets/button.dart';
 import 'package:velvethue/widgets/text_field.dart';
 
 class EditAccount extends StatelessWidget {
-  const EditAccount({super.key});
+  final dynamic data;
+
+  const EditAccount({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +32,13 @@ class EditAccount extends StatelessWidget {
                 height: 100.h,
                 width: 100.w,
                 decoration: const BoxDecoration(shape: BoxShape.circle),
-                child: controller.imgPath.isEmpty
-                    ? const Icon(Icons.person, size: 40)
+                child: data['imageUrl'] == '' && controller.imgPath.isEmpty
+                    ? const Image(image: AssetImage('images/logo.png'))
                     //? Image.asset("images/logo.png", fit: BoxFit.cover)
-                    : Image.file(File(controller.imgPath.value),
-                        fit: BoxFit.cover),
+                    : data['imageUrl'] != null && controller.imgPath.isEmpty
+                        ? Image.network(data['imageUrl'], fit: BoxFit.cover)
+                        : Image.file(File(controller.imgPath.value),
+                            fit: BoxFit.cover),
               ),
               space,
               OutlinedButton(
@@ -42,11 +47,30 @@ class EditAccount extends StatelessWidget {
                   },
                   child: Text("change image", style: kText)),
               gap,
-              TxtField(controller: controller.nameController, hint: "name"),
+              TxtField(
+                  controller: controller.nameController, hint: data['name']),
               gap,
-              TxtField(controller: controller.passController, hint: "password"),
+              // TxtField(
+              //     controller: controller.passController,
+              //     hint: data['pass'],
+              //     obscure: true),
               const Spacer(),
-              CustomButton(text: "save changes", onTap: () {}),
+              controller.isLoading.value
+                  ? processing
+                  : CustomButton(
+                      text: "save changes",
+                      onTap: () async {
+                        controller.isLoading(true);
+                        if (controller.imgPath.value.isNotEmpty &&
+                            controller.nameController.text.isNotEmpty) {
+                          await controller.uploadImage();
+                          await controller.updateInfo();
+                          toast("Update Successfully");
+                        } else {
+                          toast("please select image and name both");
+                          controller.isLoading(false);
+                        }
+                      }),
             ],
           ),
         )),

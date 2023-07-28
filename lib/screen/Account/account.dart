@@ -20,6 +20,7 @@ class Account extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var authController = Get.put(AuthController());
+    dynamic userData;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,9 +28,12 @@ class Account extends StatelessWidget {
           centerTitle: true,
           actions: [
             IconButton(
+                icon: const Icon(Icons.follow_the_signs_outlined),
+                onPressed: () => authController.signoutMethod()),
+            IconButton(
                 icon: const Icon(Icons.edit_square),
                 onPressed: () {
-                  Get.to(() => const EditAccount());
+                  Get.to(() => EditAccount(data: userData));
                 })
           ]),
       body: StreamBuilder(
@@ -37,8 +41,11 @@ class Account extends StatelessWidget {
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
               return processing;
+            } else if (snapshot.hasError) {
+              return toast("please reload app if empty");
             } else {
               var data = snapshot.data!.docs[0];
+              userData = data;
               return Padding(
                 padding: kPadding.copyWith(top: 0),
                 child: Column(
@@ -47,16 +54,21 @@ class Account extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(children: [
-                            CircleAvatar(
-                                radius: 25.r,
-                                backgroundImage:
-                                    const AssetImage("images/logo.png")),
+                            data['imageUrl'] == ''
+                                ? CircleAvatar(
+                                    radius: 25.r,
+                                    backgroundImage:
+                                        const AssetImage("images/logo.png"))
+                                : CircleAvatar(
+                                    radius: 25.r,
+                                    backgroundImage:
+                                        NetworkImage(data['imageUrl'])),
                             gaph,
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("${data['name']}", style: kTitle),
-                                  Text("${data['email']}", style: kText),
+                                  Text(data['name'], style: kTitle),
+                                  Text(data['email'], style: kText),
                                   //Text("bla bla bla", style: kTitle),
                                   //Text("velvethue@gmail.com", style: kText),
                                 ])
@@ -73,10 +85,12 @@ class Account extends StatelessWidget {
                     gap,
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: const [
-                          CountView(count: "00", title: "In cart"),
-                          CountView(count: "00", title: "In wishlist"),
-                          CountView(count: "00", title: "Total Order"),
+                        children: [
+                          CountView(count: data['cartCount'], title: "In cart"),
+                          CountView(
+                              count: data['wishCount'], title: "In wishlist"),
+                          CountView(
+                              count: data['orderCount'], title: "Total Order"),
                         ]),
                     gap,
                     gap,
